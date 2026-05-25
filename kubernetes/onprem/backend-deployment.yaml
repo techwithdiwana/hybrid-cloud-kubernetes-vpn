@@ -1,0 +1,33 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hybrid-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hybrid-backend
+  template:
+    metadata:
+      labels:
+        app: hybrid-backend
+    spec:
+      containers:
+      - name: hybrid-backend
+        image: techwithdiwana/hybrid-backend:latest
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hybrid-backend-service
+spec:
+  type: NodePort
+  selector:
+    app: hybrid-backend
+  ports:
+  - port: 80
+    targetPort: 8000
+    nodePort: 30001
